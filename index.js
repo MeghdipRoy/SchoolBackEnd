@@ -8,11 +8,10 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-//  Add School API - POST /addSchool
-app.post('/addSchool', (req, res) => {
+
+app.post('/api/addSchool', (req, res) => {
     const { name, address, latitude, longitude } = req.body;
 
-    // Validate input data
     if (!name || !address || !latitude || !longitude) {
         return res.status(400).json({ error: 'All fields are required.' });
     }
@@ -27,8 +26,7 @@ app.post('/addSchool', (req, res) => {
     });
 });
 
-//  List Schools API - GET /listSchools
-app.get('/listSchools', (req, res) => {
+app.get('/api/listSchools', (req, res) => {
     const { latitude, longitude } = req.query;
 
     if (!latitude || !longitude) {
@@ -42,7 +40,7 @@ app.get('/listSchools', (req, res) => {
             return res.status(500).json({ error: 'Failed to fetch schools.' });
         }
 
-        // Calculate distance and sort by proximity
+        
         const userLat = parseFloat(latitude);
         const userLon = parseFloat(longitude);
 
@@ -57,7 +55,6 @@ app.get('/listSchools', (req, res) => {
     });
 });
 
-// Server setup
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
